@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@200..900&display=swap');
+
+body {
+    font-family: "Reddit Mono", monospace;
+    font-size: 14px;
+    padding: 30px;
+    background: #aca3a3;
+}
+
+.container {
+    display: flex;
+
+}
+#map {
+    height: 500px;
+    width: 1200px;
+}
+#barchart1 {
+    height: 400px;
+    width: 400px;
+    position: absolute;
+    top: 700px;
+}
+#barchart2 {
+    height: 400px;
+    width: 400px;
+    position: absolute;
+    top: 700px;
+    left: 500px;
+}
+#bubbles {
+    height: 400px;
+    width: 400px;
+    position: absolute;
+    top: 700px;
+    left: 1000px;
+}
+
+
+
+h1 {
+    margin-top: 0;
+}
+
+.axis text {
+    font-size: 10px;
+    fill: #000000;
+}
+
+.axis-title {
+    font-size: 10px;
+    fill: #000000;
+}
