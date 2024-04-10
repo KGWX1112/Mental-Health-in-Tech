@@ -65,7 +65,6 @@ class BubbleChart {
         ]
         const countEmployees = d3.rollups(vis.data, v => v.length, d => d.coworkers + "-" + d.supervisor + "-"  + d.mental_health_interview + "-" + d.treatment);
         vis.aggregatedData = Array.from(countEmployees, ([key, count]) => ({key, count}));
-        console.log(this.aggregatedData)
 
         vis.radiusScale.domain([0, (d3.max(vis.aggregatedData)).count])
         var i = 0

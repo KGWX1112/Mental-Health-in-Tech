@@ -56,7 +56,6 @@ class Choropleth {
 
     updateVis() {
         let vis = this;
-        console.log(vis.aggregateData)
         vis.colorScale.domain([0, 130]) 
 
         vis.renderVis();
