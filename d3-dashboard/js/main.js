@@ -8,7 +8,7 @@ Promise.all([
     map = d[1]
 
     data = data.filter(d => {
-        return d.Country == "United States" || d.Country == "Canada"
+        return d.Country == "United States"
     })
     //This is to consolidate Genders. Some Genders in the Data Set were clearly jokes like one just said "Nah"
     data.forEach(d => {

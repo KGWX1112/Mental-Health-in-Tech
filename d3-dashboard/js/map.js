@@ -26,7 +26,7 @@ class Choropleth {
         
         //This creates a scale for the map
         let projection = d3.geoMercator();
-        projection.fitSize([1100,480], vis.map);
+        projection.fitSize([1400,480], vis.map);
         //This us a draw method for the map
         vis.generator = d3.geoPath()
 			.projection(projection);
@@ -34,23 +34,12 @@ class Choropleth {
         vis.aggregateData = {};
         //This Aggregates the Values for the United States and Canada in an Array Defined Above
         vis.data.forEach(d =>{
-            if (d.state != "NA" || d.Country == "Canada"){
-                if (d.Country == "Canada"){
-                    if (vis.aggregateData["CAN"] == null)
-                        vis.aggregateData["CAN"] = 1
-                    else
-                        vis.aggregateData["CAN"] = vis.aggregateData["CAN"] + 1
-                }
-                else{
-                    if (vis.aggregateData[d.state] == null)
-                        vis.aggregateData[d.state] = 1
-                    else
-                        vis.aggregateData[d.state] = vis.aggregateData[d.state] + 1
-                } 
-            }
+            if (vis.aggregateData[d.state] == null)
+                vis.aggregateData[d.state] = 1
+            else
+                vis.aggregateData[d.state] = vis.aggregateData[d.state] + 1
         })
-        //This sets a bound for the color scale so it fits the data. I hard coded it becasue I could get MAx to work
-        
+        //This sets a bound for the color scale so it fits the data. I hard coded it becasue I could get MAx to work  
         
     }
 
@@ -72,6 +61,9 @@ class Choropleth {
             .attr("fill", function(d){
                 let statePop = vis.aggregateData[d.properties.NAME] 
 				return statePop ? vis.colorScale(statePop) : "#ccc"; //This last RGB value is a else value and is a light gray
+            })
+            .on("click", function(d,i){
+                console.log(d)
             })
     }
 }
