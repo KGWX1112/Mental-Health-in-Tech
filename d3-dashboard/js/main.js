@@ -1,4 +1,5 @@
 let data, map, barchart1, barchart2, bubble;
+const dispatcher = d3.dispatch("filterStates")
 
 Promise.all([
     d3.csv("data/survey.csv"),
@@ -34,7 +35,7 @@ Promise.all([
 
     const colorScale = d3.scaleSequential(d3.interpolateYlGn);
 
-    map = new Choropleth({parentElement: '#map'}, data, map, colorScale)
+    map = new Choropleth({parentElement: "#map"}, data, map, colorScale)
     map.updateVis()
 
     barchart1 = new BarChart1({parentElement: "#barchart1"}, data)
@@ -48,4 +49,16 @@ Promise.all([
 
 })
 .catch(error => console.error(error));
+
+dispatcher.on("filterStates", selectedStates => {
+    if (selectedStates.length === 0){
+        barchart1.data = data;
+        barchart2.data = data;
+        bubble.data = data;
+    }else{
+        barchart1.data = data.filter(d => selectedStates.includes(d.state))
+        barchart2.data = data.filter(d => selectedStates.includes(d.state))
+        bubble.data = data.filter(d => selectedStates.includes(d.state))
+    }
+})
 
