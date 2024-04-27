@@ -85,6 +85,7 @@ class BarChart2 {
 
     renderVis() {
         let vis = this;
+        vis.chart.selectAll("g").remove() //This is so the bars updates easy
         const bars = vis.chart.selectAll('.bar')
             .data(vis.aggregatedData)
             .enter().append("g")

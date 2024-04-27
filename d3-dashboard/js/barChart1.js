@@ -69,21 +69,23 @@ class BarChart1 {
 
     renderVis() {
         let vis = this;
+        vis.chart.selectAll("g").remove() //This is so the bars updates easy
         const bars = vis.chart.selectAll('.bar')
             .data(vis.aggregatedData)
             .enter().append("g")
             .attr("class", "bar")
             .attr("id", d => d.key)
             .attr("transform", d => "translate(" + vis.xScale(d.key) + ",0)")
-          .selectAll("rect")
+        bars.selectAll("rect")
             .data(d => d.values)
-          .enter().append("rect")
+            .enter().append("rect")
             .attr("x", d => vis.xScale.bandwidth() / vis.groupCount * vis.groups.indexOf(d.treatment))
             .attr("y", d => vis.yScale(d.count))
             .attr("width", vis.xScale.bandwidth() / vis.groupCount)
             .attr("height", d => vis.height - vis.yScale(d.count))
             .attr("fill", d => vis.colorScale(d.treatment));
-
+        
+        
         vis.chart.append('g')
             .attr("class", "x axis")
             .attr("transform", "translate(0," + vis.height + ")")

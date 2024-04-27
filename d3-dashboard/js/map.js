@@ -62,8 +62,9 @@ class Choropleth {
                 let statePop = vis.aggregateData[d.properties.NAME] 
 				return statePop ? vis.colorScale(statePop) : "#ccc"; //This last RGB value is a else value and is a light gray
             })
-            .on("click", function(d,i){
+            .on("click", function(e,d){
                 console.log(d)
+
             })
     }
 }

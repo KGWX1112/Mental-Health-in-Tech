@@ -35,7 +35,7 @@ Promise.all([
 
     const colorScale = d3.scaleSequential(d3.interpolateYlGn);
 
-    map = new Choropleth({parentElement: "#map"}, data, map, colorScale)
+    map = new Choropleth({parentElement: "#map"}, data, map, colorScale, dispatcher)
     map.updateVis()
 
     barchart1 = new BarChart1({parentElement: "#barchart1"}, data)
@@ -56,9 +56,13 @@ dispatcher.on("filterStates", selectedStates => {
         barchart2.data = data;
         bubble.data = data;
     }else{
+        console.log(selectedStates)
         barchart1.data = data.filter(d => selectedStates.includes(d.state))
         barchart2.data = data.filter(d => selectedStates.includes(d.state))
         bubble.data = data.filter(d => selectedStates.includes(d.state))
     }
+    barchart1.updateVis();
+    barchart2.updateVis();
+    bubble.updateVis();
 })
 
