@@ -1,5 +1,5 @@
 class Choropleth {
-    constructor(_config, _data, _map, _colorScale) {
+    constructor(_config, _data, _map, _colorScale, _dispatcher) {
         this.config = {
             parentElement: _config.parentElement,
             containerWidth: _config.containerWidth || 1200,
@@ -9,6 +9,7 @@ class Choropleth {
         this.data = _data
         this.map = _map;
         this.colorScale = _colorScale;
+        this.dispatcher = _dispatcher || null;
         this.initVis();
     }
     initVis() {
@@ -51,19 +52,44 @@ class Choropleth {
     }
 
     renderVis() {
-        let vis = this;      
+        let vis = this;     
         vis.chart.selectAll('paths')
 			.data(vis.map.features)
 			.enter()
 			.append('path')
 			.attr('d', vis.generator)
 			.attr('stroke', 'black')
+            .style("opacity", 1)
             .attr("fill", function(d){
                 let statePop = vis.aggregateData[d.properties.NAME] 
 				return statePop ? vis.colorScale(statePop) : "#ccc"; //This last RGB value is a else value and is a light gray
             })
-            .on("click", function(e,d){
-                console.log(d)
+            .on("click", function(e,d){ 
+                //These check as to which state you are selecting
+                const isSelected = d3.select(this).classed("active");
+                d3.select(this).classed("active", !isSelected);
+                //This an array of the selected states. if you were to select the same state twice, it will remove it from array
+                const selectedStates = vis.chart.selectAll('path.active')
+                    .data()
+                    .map(k => k.properties.NAME);
+                //This changes the opacity of the selected states
+                console.log(selectedStates)
+                //This if statment checks what states are selected and changes their opacity 
+                if (selectedStates.indexOf(d.properties.NAME) !== -1){
+                    d3.select(this)
+                        .transition()
+                        .duration(1000)
+                        .style("opacity", 0.5)
+                }
+                else{
+                    d3.select(this)
+                        .transition()
+                        .duration(1000)
+                        .style("opacity", null)
+                }
+    
+                //call the dispatcher to actually update the graphs
+                vis.dispatcher.call("filterStates", e, selectedStates);
 
             })
     }
