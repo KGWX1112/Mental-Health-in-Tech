@@ -1,5 +1,5 @@
 class BarChart1 {
-    constructor(_config, _data) {
+    constructor(_config, _data, _colorScale) {
         this.config = {
             parentElement: _config.parentElement,
             containerWidth: _config.containerWidth || 400,
@@ -7,6 +7,7 @@ class BarChart1 {
             margin: _config.margin || {top: 20, right: 20, bottom: 20, left: 30}
         };
         this.data = _data;
+        this.colorScale = _colorScale
 
         this.initVis();
     }
@@ -24,23 +25,41 @@ class BarChart1 {
         
         vis.chart = vis.svg.append('g')
             .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
-        
-        vis.colorScale = d3.scaleOrdinal()
-            .range(['#FFA500','#0000FF'])
 
         vis.xScale = d3.scaleBand()
             .range([0, vis.width])
             .paddingInner(0.2);
         
         vis.yScale = d3.scaleLinear()
-            .range([vis.height, 0]); 
-
+            .range([vis.height, 0]);
         vis.xAxis = d3.axisBottom(vis.xScale)
             .tickSizeOuter(0);
 
         vis.yAxis = d3.axisLeft(vis.yScale)
             .ticks(6)
             .tickSizeOuter(0);
+
+        vis.svg.selectAll(".legned")
+            .data(vis.colorScale.domain())
+            .join("rect")
+            .attr("class", "legend")
+            .attr("width", 12)
+            .attr("height", 12)
+            .attr("fill", vis.colorScale)
+            .attr("x", 20)
+            .attr("y", (d,i) => i * 20)
+
+        vis.svg.selectAll(".legend-text")
+            .data(vis.colorScale.domain())
+            .join("text")
+            .attr("class", "legend-text")
+            .attr("x", 46)
+            .attr("y", (d,i) => 11 + i * 20)
+            .style('fill', 'black')
+            .style("text-anchor", "middle")
+            .style("font-size", "8px")
+            .style("fill", "black")
+            .text(d => "Treatment: " + d);
         
     }
 
@@ -76,6 +95,7 @@ class BarChart1 {
             .attr("class", "bar")
             .attr("id", d => d.key)
             .attr("transform", d => "translate(" + vis.xScale(d.key) + ",0)")
+        
         bars.selectAll("rect")
             .data(d => d.values)
             .enter().append("rect")

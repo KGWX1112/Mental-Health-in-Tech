@@ -72,8 +72,6 @@ class Choropleth {
                 const selectedStates = vis.chart.selectAll('path.active')
                     .data()
                     .map(k => k.properties.NAME);
-                //This changes the opacity of the selected states
-                console.log(selectedStates)
                 //This if statment checks what states are selected and changes their opacity 
                 if (selectedStates.indexOf(d.properties.NAME) !== -1){
                     d3.select(this)
