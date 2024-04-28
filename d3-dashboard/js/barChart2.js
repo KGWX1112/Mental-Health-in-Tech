@@ -1,5 +1,5 @@
 class BarChart2 {
-    constructor(_config, _data, _colorScale) {
+    constructor(_config, _data, _colorscale) {
         this.config = {
             parentElement: _config.parentElement,
             containerWidth: _config.containerWidth || 400,
@@ -7,7 +7,7 @@ class BarChart2 {
             margin: _config.margin || {top: 30, right: 20, bottom: 20, left: 30}
         };
         this.data = _data;
-        this.colorScale = _colorScale
+        this.colorScale = _colorscale
 
         this.initVis();
     }
@@ -24,7 +24,7 @@ class BarChart2 {
             .attr('height', vis.config.containerHeight);        
         vis.chart = vis.svg.append('g')
             .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
-        
+
         vis.xScale = d3.scaleBand()
             .range([0, vis.width])
             .paddingInner(0.2);
@@ -36,7 +36,6 @@ class BarChart2 {
             .tickSizeOuter(0);
 
         vis.yAxis = d3.axisLeft(vis.yScale)
-            .ticks(6)
             .tickSizeOuter(0);
         
     }
@@ -70,13 +69,14 @@ class BarChart2 {
         vis.aggregatedData.sort((a,b) =>{
             return order.indexOf(a.key) - order.indexOf(b.key)
         })
+
         
-        vis.xValue = vis.aggregatedData.map(d => d.key);
+        vis.ageGroup = vis.aggregatedData.map(d => d.key);
         vis.groups = vis.aggregatedData[0].values.map(d => d.gender);
         vis.groupCount = vis.groups.length;
 
-        vis.xScale.domain(vis.xValue);
-        vis.yScale.domain([0, d3.max(vis.aggregatedData, d => d3.max(d.values, d => d.count))])
+        vis.xScale.domain(vis.ageGroup);
+        vis.yScale.domain([1, d3.max(vis.aggregatedData, d => d3.sum(d.values, d => d.count))])
 
         vis.renderVis();
     }
@@ -84,25 +84,20 @@ class BarChart2 {
     renderVis() {
         let vis = this;
         vis.chart.selectAll("g").remove() //This is so the bars updates easy
-        const stack = d3.stack()
-            .keys(vis.groups)
-            .order(d3.stackOrderNone)
-            .offset(d3.stackOffsetNone)
-        console.log
         const bars = vis.chart.selectAll('.bar')
             .data(vis.aggregatedData)
             .enter().append("g")
             .attr("class", "bar")
             .attr("transform", d => "translate(" + vis.xScale(d.key) + ",0)")
-        bars.selectAll("rect")
+          .selectAll("rect")
             .data(d => d.values)
-            .enter().append("rect")
+          .enter().append("rect")
             .attr("x", d => vis.xScale.bandwidth() / vis.groupCount * vis.groups.indexOf(d.gender))
             .attr("y", d => vis.yScale(d.count))
             .attr("width", vis.xScale.bandwidth() / vis.groupCount)
             .attr("height", d => vis.height - vis.yScale(d.count))
             .attr("fill", d => vis.colorScale(d.gender));
-
+    
         vis.chart.append('g')
             .attr("class", "x axis")
             .attr("transform", "translate(0," + vis.height + ")")

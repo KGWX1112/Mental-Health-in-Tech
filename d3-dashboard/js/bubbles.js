@@ -59,6 +59,18 @@ class BubbleChart {
      */
     updateVis() {
         let vis = this;
+        let coords = [
+            {x: 150, y: 250},
+            {x: 210, y: 300},
+            {x: 310, y: 350},
+            {x: 320, y: 40},
+            {x: 40, y: 250},
+            {x: 40, y: 40},
+            {x: 50, y: 200},
+            {x: 200, y: 100},
+            {x: 150, y: 190},
+            {x: 45, y: 325}
+        ]
 
         vis.data = vis.data.filter(d => d.coworkers != "Some of them")
         vis.data = vis.data.filter(d => d.supervisor != "Some of them")
@@ -72,21 +84,13 @@ class BubbleChart {
 
         vis.radiusScale.domain([0, (d3.max(vis.aggregatedData, d => d3.max(d.values, d => d.count)))])
         
-        vis.simulation = d3.forceSimulation(vis.aggregatedData.values) //https://observablehq.com/@d3/clustered-bubbles
-            .force("x", d3.forceX(vis.width/2).strength(0.01))
-            .force("y", d3.forceY(vis.height/2).strength(0.01))
-            .force("collide", d3.forceCollide().radius(20))
-            .on("tick", ticked);
-
-            function ticked(){
-
-            }
-        
-        vis.aggregatedData.forEach(d=>{
+        var i =0
+        vis.aggregatedData.forEach(d =>{
             d.values.forEach(f =>{
-                f.x = Math.random() * vis.width 
-                f.y = Math.random() * vis.height
+                f.x = coords[i].x
+                f.y = coords[i].y
                 f.label = d.key
+                i++
             })
             
         })
@@ -111,16 +115,6 @@ class BubbleChart {
             .attr("cy", d => d.y)
             .attr("r", d => vis.radiusScale(d.count))
             .attr("fill", d=> vis.colorScale(d.treatment))
-
-        vis.simulation = d3.forceSimulation(vis.aggregatedData.values) //https://observablehq.com/@d3/clustered-bubbles
-            .force("x", d3.forceX(vis.width/2).strength(0.01))
-            .force("y", d3.forceY(vis.height/2).strength(0.01))
-            .force("collide", d3.forceCollide().radius(20))
-            .on("tick", ticked);
-
-            function ticked(){
-
-            }
         
         var labels = vis.chart.selectAll(".label")
             .data(vis.aggregatedData)

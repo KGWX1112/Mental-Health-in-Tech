@@ -105,7 +105,6 @@ class BarChart1 {
             .attr("height", d => vis.height - vis.yScale(d.count))
             .attr("fill", d => vis.colorScale(d.treatment));
         
-        
         vis.chart.append('g')
             .attr("class", "x axis")
             .attr("transform", "translate(0," + vis.height + ")")

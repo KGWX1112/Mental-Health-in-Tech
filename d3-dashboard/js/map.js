@@ -77,7 +77,7 @@ class Choropleth {
                     d3.select(this)
                         .transition()
                         .duration(1000)
-                        .style("opacity", 0.5)
+                        .style("opacity", 0.7)
                 }
                 else{
                     d3.select(this)
