@@ -44,11 +44,11 @@ class BubbleChart {
             .data(vis.colorScale.domain())
             .join("text")
             .attr("class", "legend-text")
-            .attr("x", 46)
+            .attr("x", 55)
             .attr("y", (d,i) => 11 + i * 20)
             .style('fill', 'black')
             .style("text-anchor", "middle")
-            .style("font-size", "8px")
+            .style("font-size", "10px")
             .style("fill", "black")
             .text(d => "Treatment: " + d);
 
@@ -129,7 +129,7 @@ class BubbleChart {
             .attr("dy", "0.35em")
             .text(d => d.label)
             .style("text-anchor", "middle")
-            .style("font-size", "8px")
+            .style("font-size", "10px")
             .style("fill", "white");
 
             

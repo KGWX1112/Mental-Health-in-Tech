@@ -38,6 +38,8 @@ class BarChart1 {
         vis.yAxis = d3.axisLeft(vis.yScale)
             .ticks(6)
             .tickSizeOuter(0);
+        
+        vis.colorScale.domain(vis.data.map(d => d.treatment))
 
         vis.svg.selectAll(".legned")
             .data(vis.colorScale.domain())
@@ -46,21 +48,20 @@ class BarChart1 {
             .attr("width", 12)
             .attr("height", 12)
             .attr("fill", vis.colorScale)
-            .attr("x", 20)
+            .attr("x", 40)
             .attr("y", (d,i) => i * 20)
 
         vis.svg.selectAll(".legend-text")
             .data(vis.colorScale.domain())
             .join("text")
             .attr("class", "legend-text")
-            .attr("x", 46)
+            .attr("x", 95)
             .attr("y", (d,i) => 11 + i * 20)
             .style('fill', 'black')
             .style("text-anchor", "middle")
-            .style("font-size", "8px")
+            .style("font-size", "10px")
             .style("fill", "black")
             .text(d => "Treatment: " + d);
-        
     }
 
     updateVis() {

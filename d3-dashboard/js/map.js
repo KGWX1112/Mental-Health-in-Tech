@@ -40,7 +40,6 @@ class Choropleth {
             else
                 vis.aggregateData[d.state] = vis.aggregateData[d.state] + 1
         })
-        //This sets a bound for the color scale so it fits the data. I hard coded it becasue I could get MAx to work  
         
     }
 
